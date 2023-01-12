@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>X.509 DIGITAL CERTIFICATES</h1>
+    <br />
+    <hr />
+    <div>
+        <h2>WHAT IS X.509 V3 DIGITAL CERTIFICATE ?</h2>
+        <p>
+            An X.509 certificate is a digital certificate based on the widely accepted International Telecommunications Union(ITU) X.509 standart,
+            which defines the format of public key insfrastructure (PKI) certificates. They are used to manage identity and security in internet communications and computer networking.
+            They are unobtrusice and ubiquitous, and we encounter them every day when using websites, mobile apps, online documents and connected devices.
+        </p>
+    </div>
+    <div>
+        <h2>HOW DO X.509 CERTIFICATES WORK?</h2>
+        <p>
+            The X.509 standart is based on an interface description language known as Abstarct Syntax Notation One(ASN.1),
+            which defines data structures that can be serialized and deserialized in a cross- platform way. Leveraging ASN,
+            the X.509 certificate format uses a related public and private key pair to encrypt and decrypt a message.
+        </p>
+    </div>
+    <div>
+        <h2>Digital Certificates Apply Hierarchical Trust Chains</h2>
+        <p>
+            To further establish the trust of an identity, multiple digital certificates are often combined to build a hierarchical chain of trust that provides a series of verification layers.
+            As previously mentioned , each must be signed by an issuer CA as part of the X.509 verification process.
+            The CA is named and stored in the root of the certificate. Additional intermediate certificates can be included in the trust chain and must be validated.
+            For example, when a web browser client reads the certificate, it must be able to follow the hierarchical path of certification including any intermediates required for validation that are 
+            recursively linked back to the root CA listed in the client’s trust store, resulting in a complete chain of trust.
+        </p>
+</div>
+
+</body>
+</html>

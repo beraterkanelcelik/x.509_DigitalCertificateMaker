@@ -1,0 +1,87 @@
+﻿@using MainProject.Models.Classes
+@using MainProject.Business
+@using PagedList
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<Log>
+@{
+    ViewBag.Title = "UserLogList";
+    int counter = 1 + ((Model.PageNumber-1)*10);
+    int totalpage = Model.TotalItemCount / 10;
+}
+<h2>Log History</h2>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="~/Scripts/UserLoglist.js"></script>
+</head>
+<body>
+    <br>
+    <div>
+        
+        <form action="" method="post">
+            <label>Search By Mail:</label>
+            @Html.TextBox("searchMail", ViewBag.filter_searchMail as string)
+            <label>Search By Message:</label>
+            @Html.TextBox("searchMessage", ViewBag.filter_searchMessage as string)
+            <label>From:</label>
+            <input type="datetime-local" name="startDate" id="startDate"value="" onchange="insertStartDate(this)"/>
+            <label>To:</label>
+            <input type="datetime-local" name="endDate" id="endDate"value="" onchange="insertEndDate(this)"/>
+            <button class="btn btn-info" type="submit" >Search</button>
+        </form>
+    </div>
+    <br />
+    <div>
+        <table class="table table-bordered" width="100%">
+            <tr>
+                <th>
+                    Log
+                </th>
+                <th>
+                    UserMail
+                    @Html.ActionLink("↑", "UserLogList", "Home", new { sort_order = "UserMailUp", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "UserLogList", "Home", new { sort_order = "UserMailDown", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                </th>
+                <th>
+                    LogMessage
+                    @Html.ActionLink("↑", "UserLogList", "Home", new { sort_order = "LogMessageUp", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "UserLogList", "Home", new { sort_order = "LogMessageDown", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                </th>
+                <th>
+                    LogTime
+                    @Html.ActionLink("↑", "UserLogList", "Home", new { sort_order = "LogTimeUp", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "UserLogList", "Home", new { sort_order = "LogTimeDown", startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, }, new { @class = "btn" })
+                </th>
+
+            </tr>
+            @{
+
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @item.User.UserMail
+                        </td>
+                        <td>
+                            @item.Type.GetDisplayName()
+                        </td>
+                        <td>
+                            @item.LogTime
+                        </td>
+                    </tr>
+                    counter = counter + 1;
+                }
+            }
+
+        </table>
+        Total UserLog = @Model.TotalItemCount
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("UserLogList", new { page, startDate = ViewBag.startDate, endDate = ViewBag.endDate, searchMail = ViewBag.searchMail, searchMessage = ViewBag.searchMessage, sort_order = ViewBag.sort_order }))
+        @Model.PageNumber of  @totalpage
+    </div>
+
+</body>
+</html>

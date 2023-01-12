@@ -1,0 +1,101 @@
+﻿@model MainProject.Models.Classes.Certificate
+@{
+    ViewBag.Title = "Create";
+
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/CreateCert.js"></script>
+</head>
+<body>
+    <h2>Create Certificate</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.CertificateName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CertificateName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CertificateName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.IssuerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IssuerName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IssuerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.HashAlgorithm, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select name="HashAlgorithm" id="HasAlgorithm" class="list-group-item">
+                        <option value="SHA512">SHA512</option>
+                        <option value="SHA256">SHA256</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.SignatureAlgorithm, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select name="SignaTureAlgorithm" id="SignaTureAlgorithm" class="list-group-item" onchange="RSA(this.value)">
+                        <option value="ECDSA">ECDSA</option>
+                        <option value="RSA">RSA</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group" id="bitDiv" style="display:none">
+                @Html.LabelFor(model => model.SignatureBit, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <select name="SignatureBit" id="SignatureBit" class="list-group-item">
+                        <option value="1024">1024</option>
+                        <option value="2048">2048</option>
+                        <option value="4096">4096</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ValidFrom, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ValidFrom, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(model => model.ValidFrom, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ValidTo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.ValidTo, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(model => model.ValidTo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+
+                </div>
+                <div class="text-success">
+                    @if (ViewBag.isCreated == true)
+                    {
+                        <label style="margin-left:100px; width:50%;">Certificate Created Successfully!</label>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>

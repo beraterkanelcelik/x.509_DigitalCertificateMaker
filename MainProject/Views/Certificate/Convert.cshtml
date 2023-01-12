@@ -1,0 +1,39 @@
+﻿@using MainProject.Models.Classes
+@{
+    ViewBag.Title = "ConvertCertificate";
+}
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="~/Scripts/Convert.js"></script>
+</head>
+<body>
+    <h2>Convert Certificate</h2>
+
+    @using (Html.BeginForm("Convert", "Certificate", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            <div>
+                <input type="file" name="file" id="file" value="" onchange="return fileValidation(this)" />
+            </div>
+            <br />
+            <div>
+                <select name="fileformat" id="fileformat" class="list-group-item">
+                    <option value="der">der</option>
+                    <option value="cer">cer</option>
+                    <option value="pem">pem</option>
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Convert" class="btn btn-info" onclick="return checkSubmit()" />
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>

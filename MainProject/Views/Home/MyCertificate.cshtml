@@ -1,0 +1,127 @@
+﻿@using MainProject.Models.Classes
+@using PagedList
+@using PagedList.Mvc
+
+@model PagedList.IPagedList<Certificate>
+@{
+    ViewBag.Title = "MyCertificate";
+    int counter = 1 + ((Model.PageNumber - 1) * 10);
+    int totalpage = Model.TotalItemCount / 10;
+}
+
+<h2>My Certificates</h2>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+
+</head>
+<body>
+    <br>
+    <div>
+        <form action="" method="post">
+            <label>Search By CertificateName:</label>
+            @Html.TextBox("searchName", ViewBag.filter_searchName as string)
+            <button class="btn btn-info" type="submit">Search</button>
+
+        </form>
+    </div>
+    <br />
+    <div>
+        <table class="table table-bordered" width="100%">
+            <tr>
+                <th>
+                    Certificate
+                </th>
+                <th>
+                    Certificate Name<br />
+                    @Html.ActionLink("↑", "MyCertificate", "Home", new { sort_order = "CertNameUp", searchName = ViewBag.searchName }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "MyCertificate", "Home", new { sort_order = "CertNameDown", searchName = ViewBag.searchName }, new { @class = "btn" })
+                </th>
+                <th>
+                    Issued To
+                </th>
+                <th>
+                    Issued By
+                </th>
+                <th>
+                    Signature Algorithm  <br />
+                    @Html.ActionLink("↑", "MyCertificate", "Home", new { sort_order = "SignatureAlgorithmUp", searchName = ViewBag.searchName }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "MyCertificate", "Home", new { sort_order = "SignatureAlgorithmDown", searchName = ViewBag.searchName }, new { @class = "btn" })
+                </th>
+                <th>
+                    Hash Algorithm <br />
+                    @Html.ActionLink("↑", "MyCertificate", "Home", new { sort_order = "HashAlgorithmUp", searchName = ViewBag.searchName }, new { @class = "btn" })
+                    @Html.ActionLink("↓", "MyCertificate", "Home", new { sort_order = "HashAlgorithmDown", searchName = ViewBag.searchName }, new { @class = "btn" })
+                </th>
+                <th>
+                    Valid From
+                </th>
+                <th>
+                    Valid To
+                </th>
+                <th>
+                    Delete
+                </th>
+                <th>
+                    Download
+                </th>
+            </tr>
+
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @item.CertificateName
+                        </td>
+                        <td>
+                            @item.IssuerName
+                        </td>
+                        <td>
+                            @item.IssuerName
+                        </td>
+                        <td>
+                            @if (@item.SignatureAlgorithm == "RSA")
+                            {
+                                @item.SignatureAlgorithm<p>@item.SignatureBit bit</p>
+                            }
+                            else
+                            {
+                                @item.SignatureAlgorithm
+                            }
+                        </td>
+                        <td>
+                            @item.HashAlgorithm
+                        </td>
+                        <td>
+                            @item.ValidFrom.Day-@item.ValidFrom.Month-@item.ValidFrom.Year
+                        </td>
+                        <td>
+                            @item.ValidTo.Day-@item.ValidTo.Month-@item.ValidTo.Year
+                        </td>
+                        <td>
+                            <a href="/Certificate/Delete/@item.CertID" class="btn btn-danger">Delete</a>
+                        </td>
+                        <td>
+
+                            @Html.ActionLink(".CER", "Download", "Certificate", new { id = item.CertID, fileformat = "cer" }, new { @class = "btn btn-success" })
+                            @Html.ActionLink(".DER", "Download", "Certificate", new { id = item.CertID, fileformat = "der" }, new { @class = "btn btn-success" })
+                            @Html.ActionLink(".PEM", "Download", "Certificate", new { id = item.CertID, fileformat = "pem" }, new { @class = "btn btn-success" })
+
+                        </td>
+                    </tr>
+                    counter = counter + 1;
+                }
+            }
+
+        </table>
+        Total Certificate Count = @Model.TotalItemCount
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("MyCertificate", new { page, searchName = ViewBag.searchName, sort_order = ViewBag.sort_order }))
+        @Model.PageNumber of  @totalpage
+    </div>
+
+</body>
+</html>

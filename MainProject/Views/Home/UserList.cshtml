@@ -1,0 +1,76 @@
+﻿@using MainProject.Models.Classes
+@using MainProject.Business
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<User>
+
+@{
+    ViewBag.Title = "UserList";
+    int counter = 1 + ((Model.PageNumber - 1) * 10);
+    int totalpage = Model.TotalItemCount / 10;
+}
+
+<h2>UserList</h2>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <br>
+    <div>
+        <form action="" method="post">
+            <label>Search By Mail:</label>
+            @Html.TextBox("searchMail", ViewBag.filter_searchMail as string)
+
+        <select name="searchRole" id="searchRole" class="list-group-item-text">
+            <option value="">Select Role</option>
+            <option value="Admin">Admin</option>
+            <option value="User">User</option>
+        </select>
+
+            <button class="btn btn-info" type="submit">Search</button>
+        </form>
+        <br />
+    </div>
+    <div>
+        <table class="table table-bordered" width="100%">
+            <tr>
+                <th>
+                    User
+                </th>
+                <th>
+                    UserName
+                </th>
+                <th>
+                    UserRole
+                </th>
+            </tr>
+
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @counter
+                        </td>
+                        <td>
+                            @item.UserMail
+                        </td>
+                        <td>
+                            @item.UserRole.RoleName
+                        </td>
+                    </tr>
+                    counter = counter + 1;
+                }
+            }
+
+        </table>
+        Total User Count = @Model.TotalItemCount
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("UserList", new { page, searchMail = ViewBag.searchMail, searchRole = ViewBag.searchRole }))
+        @Model.PageNumber of  @totalpage
+    </div>
+
+</body>
+</html>
+
+
